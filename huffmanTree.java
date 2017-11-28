@@ -15,7 +15,7 @@ public class huffmanTree <Key extends Comparable <Key>, Value> {
             //[2, 1] //indexof
 
             if (values.contains(str.charAt(i))) {
-                int index = values.indexOf(i);
+                int index = values.indexOf(str.charAt(i));
                 int oldFreq = frequency.get(index);
 
                 //find index of the char in the array
@@ -42,6 +42,8 @@ public class huffmanTree <Key extends Comparable <Key>, Value> {
             hTNode left = queue.poll();
             hTNode right = queue.poll();
             hTNode parent = new hTNode((int) left.getKey() + (int) right.getKey(), -1, 0);
+            parent.setLeft(left);
+            parent.setRight(right);
             queue.add(parent);
         }
         root = queue.poll();
@@ -51,24 +53,25 @@ public class huffmanTree <Key extends Comparable <Key>, Value> {
 
     public String toString() {
         String binaryString = Integer.toBinaryString(32);
-        binaryString = binaryString + toString(root);
+        binaryString = binaryString + toString(root, "");
         return binaryString;
     }
 
 
-    private String toString(hTNode n) {
+    private String toString(hTNode n, String soFar) {
         if (n.isLeaf()) {
-            return "1" + Integer.toBinaryString((char) n.getValue());
+            return "1" + soFar;
         } else {
-            return "0" + toString((hTNode) n.getLeft()) + toString((hTNode) n.getRight());
+            return "0" + toString((hTNode) n.getLeft(), soFar + '0') + toString((hTNode) n.getRight(), soFar + "1");
         }
 
 
     }
 
     public static void main(String[] args) {
-        hTNode n = new hTNode(1,2,3);
-        System.out.println(n.toString());
+            huffmanTree hT = new huffmanTree("apples are not oranges");
+        System.out.println(hT.toString());
+
     }
 }
 
